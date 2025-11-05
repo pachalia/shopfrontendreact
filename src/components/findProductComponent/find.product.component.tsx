@@ -31,7 +31,7 @@ export const FindProductComponent = () => {
 				))}
 				<button type={'submit'}>
 					<img
-						src={`${BASE_URL}/images/search-svgrepo-com.svg`}
+						src={`${BASE_URL}images/search-svgrepo-com.svg`}
 						width={'30px'}
 						height={'30px'}
 						alt=""

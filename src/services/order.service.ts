@@ -38,7 +38,9 @@ export interface PaymentInfoResponse {
 
 export class OrderService {
 	static async createOrder(id: string) {
-		return await axios.post<IOrder>(URL_API_ORDER, { id }).then((res) => res.data);
+		return await axios
+			.post<IOrder>(URL_API_ORDER, { id }, { withCredentials: true })
+			.then((res) => res.data);
 	}
 
 	static async createOrderItem(order: {
@@ -48,7 +50,11 @@ export class OrderService {
 		quantity: string;
 	}) {
 		return await axios
-			.post<IOrderItem>(`${URL_API_ORDER}/order-item`, { ...order })
+			.post<IOrderItem>(
+				`${URL_API_ORDER}/order-item`,
+				{ ...order },
+				{ withCredentials: true },
+			)
 			.then((res) => res.data)
 			.catch((e: AxiosError) => console.log(e.message));
 	}
@@ -62,7 +68,7 @@ export class OrderService {
 			return await axios
 				.get<
 					IPaginationData<IOrderRedux[]>
-				>(`${URL_API_ORDER}/current-user/?${params}`)
+				>(`${URL_API_ORDER}/current-user/?${params}`, { withCredentials: true })
 				.then((res) => res.data);
 		} else {
 			order?.offset && params.append('offset', order.offset.toString());
@@ -71,20 +77,27 @@ export class OrderService {
 			order?.status && params.append('status', order.status);
 			order?.email && params.append('email', order.email);
 			return await axios
-				.get<IPaginationData<IOrderRedux[]>>(`${URL_API_ORDER}/?${params}`)
+				.get<
+					IPaginationData<IOrderRedux[]>
+				>(`${URL_API_ORDER}/?${params}`, { withCredentials: true })
 				.then((res) => res.data);
 		}
 	}
 
 	static async updateOrderStatus(id: string, status: string) {
 		return await axios
-			.put<{ id: string; status: Status }>(URL_API_ORDER, { id, status })
+			.put<{
+				id: string;
+				status: Status;
+			}>(URL_API_ORDER, { id, status }, { withCredentials: true })
 			.then((res) => res.data);
 	}
 
 	static async getPaymentInfo(id: string) {
 		return await axios
-			.get<PaymentInfoResponse>(`${URL_API_PAYMENT}/${id}`)
+			.get<PaymentInfoResponse>(`${URL_API_PAYMENT}/${id}`, {
+				withCredentials: true,
+			})
 			.then((res) => res.data);
 	}
 
@@ -95,7 +108,7 @@ export class OrderService {
 				userId: string;
 				status: string;
 				createdAt: string;
-			}>(`${URL_API_ORDER}/${id}`)
+			}>(`${URL_API_ORDER}/${id}`, { withCredentials: true })
 			.then((res) => res.data);
 	}
 }

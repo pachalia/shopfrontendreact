@@ -6,14 +6,18 @@ import { IPaymentRefund } from '../interfaces/payment.refund.interface.ts';
 export class PaymentService {
 	static async createPayment(value: string) {
 		return await axios
-			.post<IPayment>(URL_API_PAYMENT, { value })
+			.post<IPayment>(URL_API_PAYMENT, { value }, { withCredentials: true })
 			.then((res) => res.data);
 	}
 
 	static async captureOrCancelPayment(paymentId: string, amount?: string) {
 		return amount
 			? await axios
-					.put<IPayment>(URL_API_PAYMENT, { paymentId, amount })
+					.put<IPayment>(
+						URL_API_PAYMENT,
+						{ paymentId, amount },
+						{ withCredentials: true },
+					)
 					.then((res) => res.data)
 			: await axios
 					.put<IPayment>(URL_API_PAYMENT, { paymentId })
@@ -22,7 +26,11 @@ export class PaymentService {
 
 	static async paymentRefund(paymentId: string, amount: string) {
 		return await axios
-			.post<IPaymentRefund>(`${URL_API_PAYMENT}/refund`, { paymentId, amount })
+			.post<IPaymentRefund>(
+				`${URL_API_PAYMENT}/refund`,
+				{ paymentId, amount },
+				{ withCredentials: true },
+			)
 			.then((res) => res.data);
 	}
 }

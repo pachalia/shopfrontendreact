@@ -11,6 +11,7 @@ export class CategoryService {
 		order && params.append('order', order);
 		return await axios.get<PaginationResponse<ICategory[]>>(
 			`${URL_API_CATEGORIES}/?${params}`,
+			{ withCredentials: true },
 		);
 	}
 
@@ -19,9 +20,13 @@ export class CategoryService {
 	}
 
 	static async addCategory(category: string) {
-		return await axios.post<{ name: string }>(URL_API_CATEGORIES, {
-			name: category,
-		});
+		return await axios.post<{ name: string }>(
+			URL_API_CATEGORIES,
+			{
+				name: category,
+			},
+			{ withCredentials: true },
+		);
 	}
 
 	static async updateCategory(id: string, category: string) {
@@ -32,12 +37,16 @@ export class CategoryService {
 	}
 
 	static deleteCategory(id: string) {
-		return axios.delete<{ name: string }>(`${URL_API}/categories/${id}`);
+		return axios.delete<{ name: string }>(`${URL_API}/categories/${id}`, {
+			withCredentials: true,
+		});
 	}
 
 	static findCategory(category: string) {
 		return axios
-			.get<{ name: string }[]>(`${URL_API_CATEGORIES}/find/${category}`)
+			.get<
+				{ name: string }[]
+			>(`${URL_API_CATEGORIES}/find/${category}`, { withCredentials: true })
 			.then((res) => res.data);
 	}
 }

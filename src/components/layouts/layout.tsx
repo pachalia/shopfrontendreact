@@ -6,6 +6,8 @@ import { PaginationResponse } from '../../responses/pagination.response.ts';
 import { CategoryService } from '@services';
 import { FindProductComponent } from '../findProductComponent/find.product.component.tsx';
 import { BASE_URL } from '@constans';
+// import { getCookies } from '../../utils/cookies.ts';
+import Cookies from 'js-cookie';
 
 interface LayoutProps {
 	title: string;
@@ -32,16 +34,21 @@ export const Layout: React.FC<LayoutProps> = ({
 	const clickUserMenuHandler = () => {
 		setIsMenuUserOpen(!isMenuUserOpen);
 	};
-
+	const [token, setToken] = useState<string | undefined>();
 	useEffect(() => {
+		setToken(Cookies.get('accesstoken'));
 		CategoryService.getUserCategory().then((res) => setCategories(res.data));
-	}, []);
+	}, [token]);
+	console.log(token);
 	return (
 		<div className={`${margin ? 'h8 mb-5' : ''}`}>
 			<div className={`bg-green-500 flex ${userLayout && 'py-3'}`}>
 				{userLayout ? (
 					<div className={'flex w-6/12 justify-around'}>
-						<NavLink to={`${BASE_URL}`} className={'text-2xl pl-3 text-white'}>
+						<NavLink
+							to={`${BASE_URL}`}
+							className={'text-2xl pl-3 text-white'}
+						>
 							{title}
 						</NavLink>
 						<div className={'flex justify-between items-center w-6/12'}>
@@ -69,7 +76,7 @@ export const Layout: React.FC<LayoutProps> = ({
 										categories.data.map((val, index) => (
 											<NavLink
 												key={index}
-												to={`${BASE_URL}/categories/${val.name}`}
+												to={`${BASE_URL}categories/${val.name}`}
 												className={'text-black'}
 												onClick={clickHandler}
 											>
@@ -110,7 +117,7 @@ export const Layout: React.FC<LayoutProps> = ({
 											onClick={clickUserMenuHandler}
 										>
 											<NavLink
-												to={`${BASE_URL}/address`}
+												to={`${BASE_URL}address`}
 												className={'text-black'}
 											>
 												Адрес для доставки
@@ -127,11 +134,7 @@ export const Layout: React.FC<LayoutProps> = ({
 							);
 						} else {
 							return (
-								<NavLink
-									end
-									key={val.path}
-									to={`${BASE_URL}/${val.path}`}
-								>
+								<NavLink end key={val.path} to={`${BASE_URL}${val.path}`}>
 									{val.name}
 								</NavLink>
 							);

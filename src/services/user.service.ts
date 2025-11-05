@@ -10,7 +10,7 @@ import { IAddress } from '../interfaces/address.interface.ts';
 export class UserService {
 	static getCurrentUser() {
 		axios
-			.get<IUser>(`${URL_API}/auth/current-user`)
+			.get<IUser>(`${URL_API}/auth/current-user`, { withCredentials: true })
 			.then((res) => store.dispatch(setUser(res.data)))
 			.catch((e: AxiosError) => {
 				console.log(e.message);
@@ -23,10 +23,14 @@ export class UserService {
 
 	static loginUser(email: string, password: string) {
 		return axios
-			.post<IUser>(`${URL_API}/auth/login`, {
-				email,
-				password,
-			})
+			.post<IUser>(
+				`${URL_API}/auth/login`,
+				{
+					email,
+					password,
+				},
+				{ withCredentials: true },
+			)
 			.then((res) => res.data)
 			.catch((e: AxiosError) => {
 				if (e.status === 401)
@@ -41,11 +45,15 @@ export class UserService {
 		passwordRepeat: string,
 	): Promise<IUser | null> {
 		return await axios
-			.post<IUser>(`${URL_API}/auth/register`, {
-				email,
-				password,
-				passwordRepeat,
-			})
+			.post<IUser>(
+				`${URL_API}/auth/register`,
+				{
+					email,
+					password,
+					passwordRepeat,
+				},
+				{ withCredentials: true },
+			)
 			.then((res) => res.data)
 			.catch((e: AxiosError) => {
 				if (e.status === 409) {
@@ -69,6 +77,7 @@ export class UserService {
 		params.append('order', order);
 		const res = await axios.get<PaginationResponse<IUser[]>>(
 			`${URL_API}/user/?${params}`,
+			{ withCredentials: true },
 		);
 		return res.data;
 	}
@@ -78,13 +87,13 @@ export class UserService {
 	}
 	static async deleteUser(id: string) {
 		return await axios
-			.delete<{ id: string }>(`${URL_API}/user/${id}`)
+			.delete<{ id: string }>(`${URL_API}/user/${id}`, { withCredentials: true })
 			.then((res) => res.data);
 	}
 
 	static async logout() {
 		return await axios
-			.get(`${URL_API}/auth/logout`)
+			.get(`${URL_API}/auth/logout`, { withCredentials: true })
 			.then(() => true)
 			.catch((e: AxiosError) => {
 				Message.danger(e.message);
@@ -94,7 +103,7 @@ export class UserService {
 
 	static async getUsersRole(): Promise<string[]> {
 		return await axios
-			.get<string[]>(`${URL_API}/user/role`)
+			.get<string[]>(`${URL_API}/user/role`, { withCredentials: true })
 			.then((res) => res.data)
 			.catch((e: AxiosError) => {
 				Message.danger(e.message);
@@ -103,12 +112,14 @@ export class UserService {
 	}
 
 	static async findUsersByEmail(email: string) {
-		return await axios.get<IUser[]>(`${URL_API}/user/${email}`).then((res) => res);
+		return await axios
+			.get<IUser[]>(`${URL_API}/user/${email}`, { withCredentials: true })
+			.then((res) => res);
 	}
 
 	static async updateAddress(data: AddressFormData) {
 		return await axios
-			.put<IAddress>(`${URL_API}/address`, data)
+			.put<IAddress>(`${URL_API}/address`, data, { withCredentials: true })
 			.then((res) => res.data)
 			.catch((e: AxiosError) => {
 				Message.danger(e.message);
@@ -117,7 +128,7 @@ export class UserService {
 	}
 	static async getAddress() {
 		return await axios
-			.get<IAddress>(`${URL_API}/address`)
+			.get<IAddress>(`${URL_API}/address`, { withCredentials: true })
 			.then((res) => res.data)
 			.catch((e: AxiosError) => {
 				Message.danger(e.message);

@@ -5,7 +5,7 @@ import { UserOrder } from '../pages/UserOrder.tsx';
 import { BASE_URL } from '@constans';
 
 export const publicRoutes = [
-	{ path: `${BASE_URL}/`, element: <Home /> },
+	{ path: `${BASE_URL}`, element: <Home /> },
 	{ path: `${BASE_URL}product/:id`, element: <ProductCardInfo /> },
 	{ path: `${BASE_URL}cart`, element: <Cart /> },
 	{ path: `${BASE_URL}categories/:id`, element: <ProductByCategories /> },

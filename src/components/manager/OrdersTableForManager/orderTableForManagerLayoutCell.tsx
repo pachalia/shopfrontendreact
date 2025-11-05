@@ -1,5 +1,5 @@
 import { Button } from '@components';
-import { transaction } from '@constans';
+import { BASE_URL, transaction } from '@constans';
 import { Status } from '@interfaces';
 import { orderStatus } from '@utils';
 import { NavLink } from 'react-router-dom';
@@ -115,7 +115,7 @@ export const OrderTableForManagerLayoutCell: React.FC<
 					{`${value.product.quantity * value.product.price}р.`}
 				</td>
 				<td className={'border border-solid border-gray-500 text-center'}>
-					<NavLink to={`/manager/payment/${value.payment}`}>
+					<NavLink to={`${BASE_URL}manager/payment/${value.payment}`}>
 						Инфо о платеже
 					</NavLink>
 				</td>
