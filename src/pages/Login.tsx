@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@components';
 import { setLoginMessage, setUser, useAppDispatch, useAppSelector } from '@redux';
 import { useEffect } from 'react';
+import { BASE_URL } from '@constans';
 
 type FormData = {
 	email: string;
@@ -93,7 +94,7 @@ export const Login = () => {
 				{/*	/>*/}
 				{/*</div>*/}
 
-				<NavLink to={'/register'} className={'mx-auto mt-12'}>
+				<NavLink to={`${BASE_URL}register`} className={'mx-auto mt-12'}>
 					<Button title={'Регистрация'} />
 				</NavLink>
 			</div>
